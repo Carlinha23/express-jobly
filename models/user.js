@@ -26,10 +26,10 @@ class User {
     const result = await db.query(
           `SELECT username,
                   password,
-                  first_name AS "firstName",
-                  last_name AS "lastName",
+                  first_name,
+                  last_name,
                   email,
-                  is_admin AS "isAdmin"
+                  is_admin
            FROM users
            WHERE username = $1`,
         [username],
@@ -104,10 +104,10 @@ class User {
   static async findAll() {
     const result = await db.query(
           `SELECT username,
-                  first_name AS "firstName",
-                  last_name AS "lastName",
+                  first_name,
+                  last_name,
                   email,
-                  is_admin AS "isAdmin"
+                  is_admin
            FROM users
            ORDER BY username`,
     );
@@ -126,10 +126,10 @@ class User {
   static async get(username) {
     const userRes = await db.query(
           `SELECT username,
-                  first_name AS "firstName",
-                  last_name AS "lastName",
+                  first_name,
+                  last_name,
                   email,
-                  is_admin AS "isAdmin"
+                  is_admin
            FROM users
            WHERE username = $1`,
         [username],
@@ -167,9 +167,9 @@ class User {
     const { setCols, values } = sqlForPartialUpdate(
         data,
         {
-          firstName: "first_name",
-          lastName: "last_name",
-          isAdmin: "is_admin",
+          first_name,
+          last_name,
+          is_admin,
         });
     const usernameVarIdx = "$" + (values.length + 1);
 
@@ -177,10 +177,10 @@ class User {
                       SET ${setCols} 
                       WHERE username = ${usernameVarIdx} 
                       RETURNING username,
-                                first_name AS "firstName",
-                                last_name AS "lastName",
+                                first_name,
+                                last_name,
                                 email,
-                                is_admin AS "isAdmin"`;
+                                is_admin`;
     const result = await db.query(querySql, [...values, username]);
     const user = result.rows[0];
 
